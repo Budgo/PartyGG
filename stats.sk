@@ -1,0 +1,28 @@
+# dynamic stats functions, might finish later but for now hardcoded
+#
+#function getStats(u: offline player):: text:
+#	set {_p} to {_u}'s uuid # get uuid
+#
+#	loop {stats::%{_p}%::*}: # loop player's stats
+#		if {statlist::*} contains loop-value: # player has specific stat
+#			add {stats::%{_p}%::%index of %loop-value%%} to {return::*} # add number
+#
+#		else:
+#			add "0" to {return::*} # add 0
+#
+#	return "%{return::*}%"
+#
+#function addStats(u: offline player):: text:
+#	set {_p} to {_u}'s uuid
+
+function getStats(u: offline player):: text:
+	set {_p} to {_u}'s uuid
+
+	add "&7Kills: &3%{stat::kills::%{_p}%}%"
+	add "&7Deaths: &3%{stat::deaths::%{_p}%}%"
+	add "&7Wins: &3%{stat::wins::%{_p}%}%"
+	add "&7Losses: &3%{stat::losses::%{_p}%}%"
+	add "&7Winstreak: &3%{stat::nowstreak::%{_p}%}%"
+	add "&7Highest Winstreak: &3%{stat::topstreak::%{_p}%}%"
+
+	return {_return::*}
