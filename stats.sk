@@ -1,0 +1,44 @@
+# todo: dynamic stats for all games
+# current version only has specific, pre-defined stats
+# in the future will be done with 1 list of "master" stats and individual player stats as a seperate list
+# index -> stat
+# such as index 1 = kills
+# index 2 = deaths
+# etc.
+
+on join:
+  set {_u} to player's uuid
+  set {kills::%{_u}%} to 0 # kills
+  set {deaths::%{_u}%} to 0 # deaths
+  set {broken::%{_u}%} to 0 # blocks broken
+  set {placed::%{_u}%} to 0 # blocks placed
+  set {wins::%{_u}%} to 0 # wins
+  set {losses::%{_u}%} to 0 # losses
+
+command /stats [<offline player>]:
+  trigger:
+    if arg is set:
+      loop {kills::*}: # super hacky way of doing it, can't remember the specific expression for an ordered list
+        add 1 to {_size}
+        if {_sorted::%loop-value%} is not set:
+          set {_sorted::%loop-value%} to loop-index
+          
+        else:
+          set {_v} to 0
+          loop {_size} times:
+            add 1 to {_v}
+            
+            if {_sorted::%loop-value-1%.%{_n}%} is not set:
+              set {_sorted::%loop-value-1%} to loop-index
+              stop loop
+              
+    wait 1 tick
+    set {_n} to size of {_sorted::*}
+    loop {_sorted::*}:
+      set {_sortedHigh::%{_n}%} to loop-value
+      set {_n} to {_n}-1
+      
+    wait 1 tick
+    set {_i} to 0
+    
+        
