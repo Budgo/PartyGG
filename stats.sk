@@ -14,31 +14,68 @@ on join:
   set {placed::%{_u}%} to 0 # blocks placed
   set {wins::%{_u}%} to 0 # wins
   set {losses::%{_u}%} to 0 # losses
+  set {playtime::%{_u}%} to 0 # playtime
 
 command /stats [<offline player>]:
   trigger:
     if arg is set:
-      loop {kills::*}: # super hacky way of doing it, can't remember the specific expression for an ordered list
-        add 1 to {_size}
-        if {_sorted::%loop-value%} is not set:
-          set {_sorted::%loop-value%} to loop-index
-          
-        else:
-          set {_v} to 0
-          loop {_size} times:
-            add 1 to {_v}
-            
-            if {_sorted::%loop-value-1%.%{_n}%} is not set:
-              set {_sorted::%loop-value-1%} to loop-index
-              stop loop
-              
-    wait 1 tick
-    set {_n} to size of {_sorted::*}
-    loop {_sorted::*}:
-      set {_sortedHigh::%{_n}%} to loop-value
-      set {_n} to {_n}-1
+      set {_u} to arg's uuid
+      send "&3&n%arg%'s &7stats"
       
-    wait 1 tick
-    set {_i} to 0
-    
-        
+    else:
+      set {_u} to player's uuid
+      send "&3&nYour &7stats"
+      
+          # kills
+      set {_sorted::*} to sorted {kills::*} from highest to lowest
+      set {_pos} to index of {kills::%{_u}%}
+      send " &7· &3&lKILLS &7%{kills::%{_u}%} (##&3%{_pos}%&7)"
+      
+      # deaths     
+      set {_sorted::*} to sorted {deaths::*} from highest to lowest
+      set {_pos} to index of {deaths::%{_u}%}
+      send " &7· &3&lDEATHS &7%{deaths::%{_u}%} (##&3%{_pos}%&7)"
+      
+      # kdr
+      set {_kdr} to {kills::%{_u}%} / {deaths::%{_u}%}
+      send " &7· &3&lKDR &7%{_kdr}% "
+      
+      # broken
+      set {_sorted::*} to sorted {broken::*} from highest to lowest
+      set {_pos} to index of {broken::%{_u}%}
+      send " &7· &3&lBLOCKS BROKEN &7%{broken::%{_u}%} (##&3%{_pos}%&7)"
+      
+      # placed     
+      set {_sorted::*} to sorted {placed::*} from highest to lowest
+      set {_pos} to index of {placed::%{_u}%}
+      send " &7· &3&lBLOCKS PLACED &7%{placed::%{_u}%} (##&3%{_pos}%&7)"
+      
+      # bpr
+      set {_bpr} to {placed::%{_u}%} / {broken::%{_u}%}
+      send " &7· &3&lBPR &7%{_bpr}%"
+
+      # wins
+      set {_sorted::*} to sorted {wins::*} from highest to lowest
+      set {_pos} to index of {wins::%{_u}%}
+      send " &7· &3&lWINS &7%{wins::%{_u}%} (##&3%{_pos}%&7)"
+      
+      # losses     
+      set {_sorted::*} to sorted {losses::*} from highest to lowest
+      set {_pos} to index of {losses::%{_u}%}
+      send " &7· &3&lLOSSES &7%{losses::%{_u}%} (##&3%{_pos}%&7)"
+      
+      # wlr
+      set {_wlr} to {wins::%{_u}%} / {losses::%{_u}%}
+      send " &7· &3&lWLR &7%{_wlr}%"
+      
+command /leaderboards [<text>]:
+  #ailiases: lb <- is this the right syntax? idfk
+  trigger:
+    if arg is set:
+      if arg is "kills":
+        set {_sorted::*} to sorted {kills::*} from highest to lowest
+        send "&3&nTop Killers"
+        send 
+      
+    else:
+      send "&c/lb <stat>"
