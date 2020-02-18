@@ -9,7 +9,7 @@ Autominous Minigame Handling in Minehut using Skript
 - [ ] Map Rotation
 - [ ] Universal Queue System
 - [ ] Map Restoring
-- [ ] Stats Saving
+- [x] Stats Saving
 - [ ] API
 
 #### Extra
